@@ -2,13 +2,13 @@
 
 import axios from 'axios';
 import process from 'process';
-import webito from 'webito-plugin-sdk'
+import webito, { paymentsCreate_input, paymentsCreate_output, paymentsVerify_input } from 'webito-plugin-sdk'
 
 const starter = new webito.WebitoPlugin('starter');
 
 starter.registerHook(
     webito.hooks.paymentsCreate,
-    async ({ vars, data }: any) => {
+    async ({ vars, data }: { vars: { merchant: string }, data: paymentsCreate_input }) => {
         const inputdata = {
             "merchant": vars.merchant,
             "amount": data.amount * 10,
@@ -33,7 +33,7 @@ starter.registerHook(
 
 starter.registerHook(
     webito.hooks.paymentsVerify,
-    async ({ vars, data }: any) => {
+    async ({ vars, data }: { vars: { merchant: string }, data: paymentsVerify_input }) => {
         const inputdata = {
             "merchant": vars.merchant,
             "trackId": data.payment.transaction.transaction.trackId,
